@@ -25,6 +25,8 @@ public class ContactoResponse {
 
     private String direccion;
 
+    private String categoria;
+
     @JsonProperty("color_avatar")
     private String colorAvatar;
     

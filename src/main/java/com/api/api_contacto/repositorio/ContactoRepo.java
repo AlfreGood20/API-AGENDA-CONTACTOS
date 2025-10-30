@@ -1,9 +1,13 @@
 package com.api.api_contacto.repositorio;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.api.api_contacto.modelo.Contacto;
 
 @Repository
-public interface ContactoRepo extends JpaRepository<Contacto,Long>{
+public interface ContactoRepo extends JpaRepository<Contacto, Long>{
+    List<Contacto> findByNombreAndUsuarioId(String nombre, Long usuarioId);
+    List<Contacto> findByUsuarioId(Long usuarioId);
+    List<Contacto> findByUsuarioIdAndFavoritoTrue(Long usuarioId);
 }

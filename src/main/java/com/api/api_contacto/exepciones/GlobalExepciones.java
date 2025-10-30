@@ -95,4 +95,17 @@ public class GlobalExepciones {
 
         return ResponseEntity.badRequest().body(respuesta);
     }
+
+    @ExceptionHandler(ExepcionAutenticacionRechazada.class)
+    public ResponseEntity<?> manejarAutenticacionFallida(ExepcionAutenticacionRechazada ex, HttpServletRequest request){
+        MensajeExepcion mensaje = MensajeExepcion.builder()
+            .timestamp(LocalDateTime.now())
+            .status(401)
+            .error("Autenticación fallida")
+            .mensaje("Credenciales incorrectas")
+            .ruta(request.getRequestURI())
+            .build();
+
+        return new ResponseEntity<>(mensaje,HttpStatus.UNAUTHORIZED);
+    }
 }

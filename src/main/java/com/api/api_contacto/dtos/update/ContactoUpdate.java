@@ -1,7 +1,6 @@
-package com.api.api_contacto.dtos.request;
+package com.api.api_contacto.dtos.update;
 
 import com.api.api_contacto.utils.CategoriaContacto;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ContactoRequest {
+public class ContactoUpdate {
+
+    private long id;
 
     private String nombre;
 
@@ -25,12 +26,6 @@ public class ContactoRequest {
 
     private String direccion;
 
-    @NotNull(message = "La categoria no puede ser nula. Eliga entre Familia, Escuela, Amigo, Negocio, Novia, Novio, Ex o Amante")
+     @NotNull(message = "La categoria no puede ser nula. Eliga entre Familia, Escuela, Amigo, Negocio, Novia, Novio, Ex o Amante")
     private CategoriaContacto categoria;
-
-    @JsonProperty("usuario_id")
-    private long usuarioId;
-
-    @JsonProperty("color_avatar")
-    private String colorAvatar;
 }

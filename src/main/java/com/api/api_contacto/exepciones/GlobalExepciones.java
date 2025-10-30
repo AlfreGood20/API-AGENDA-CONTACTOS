@@ -102,7 +102,7 @@ public class GlobalExepciones {
             .timestamp(LocalDateTime.now())
             .status(401)
             .error("Autenticación fallida")
-            .mensaje("Credenciales incorrectas")
+            .mensaje(ex.getMessage())
             .ruta(request.getRequestURI())
             .build();
 

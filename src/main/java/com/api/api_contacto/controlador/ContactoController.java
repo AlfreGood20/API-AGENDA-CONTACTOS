@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-
-
 @RestController
 @RequestMapping("/api")
 public class ContactoController {
@@ -57,7 +55,7 @@ public class ContactoController {
         return ResponseEntity.ok().body(servicio.listaGlobal());
     }
 
-    @PutMapping("/contacto/")
+    @PutMapping("/contacto")
     public ResponseEntity<ContactoResponse> actualizarContactoUsuario(@Valid @RequestBody ContactoUpdate contactoUpdate) {
         return ResponseEntity.ok().body(servicio.actualizarContacto(contactoUpdate));
     }

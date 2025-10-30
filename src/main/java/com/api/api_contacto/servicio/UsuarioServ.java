@@ -1,6 +1,9 @@
 package com.api.api_contacto.servicio;
 
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.api.api_contacto.dtos.request.UsuarioRequest;
 import com.api.api_contacto.dtos.response.UsuarioResponse;
 import com.api.api_contacto.exepciones.ExepcionRecursoNoEncontrado;
@@ -9,6 +12,7 @@ import com.api.api_contacto.modelo.Usuario;
 import com.api.api_contacto.repositorio.UsuarioRepo;
 import com.api.api_contacto.utils.IUsuarioServ;
 
+@Service
 public class UsuarioServ implements IUsuarioServ{
 
     private final UsuarioRepo usuarioRepo;

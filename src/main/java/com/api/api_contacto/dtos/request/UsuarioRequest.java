@@ -20,7 +20,7 @@ public class UsuarioRequest {
     @NotBlank(message = "Apellidos es obligatorio")
     private String apellidos;
 
-    @Size(min = 8, max = 10,message = "El numero no puede ser mayor a 10 digitos")
+    @Size(min = 8, message = "El numero no puede ser mayor a 10 digitos")
     private String telefono;
 
     @NotBlank(message = "El correo es obligatorio")

@@ -94,9 +94,7 @@ public class ContactoServ implements IContactoServ {
 
 	@Override
 	public void eliminarPorId(long id) {
-        UsuarioResponse usuarioSesion = obtenerUsuarioDeSesion();
-        usuarioRepo.findById(usuarioSesion.getId())
-            .orElseThrow(() -> new ExepcionRecursoNoEncontrado("Usuario no encontrado"));
+        obtenerUsuarioDeSesion();
 
         Contacto eliminar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
@@ -108,6 +106,8 @@ public class ContactoServ implements IContactoServ {
     @Override
     @Transactional
     public ContactoResponse actualizarContacto(ContactoUpdate contactoUpdate){
+        obtenerUsuarioDeSesion();
+
         Contacto actualizar = contactoRepo.findById(contactoUpdate.getId())
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 
@@ -124,6 +124,8 @@ public class ContactoServ implements IContactoServ {
     @Override
     @Transactional
     public ContactoResponse cambiarEstadoFavorito(boolean estado, long id) {
+        obtenerUsuarioDeSesion();
+
         Contacto actualizar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 

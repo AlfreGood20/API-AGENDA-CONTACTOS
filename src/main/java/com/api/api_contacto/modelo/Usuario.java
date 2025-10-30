@@ -45,7 +45,7 @@ public class Usuario {
     private String contrasena;
 
     @CreationTimestamp
-    @Column(name = "fecha_registro")
+    @Column(name = "fecha_registro", nullable = false)
     private LocalDateTime fechaRegistro;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)

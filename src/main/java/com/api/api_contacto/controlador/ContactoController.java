@@ -35,6 +35,11 @@ public class ContactoController {
         return new ResponseEntity<ContactoResponse>(servicio.crear(contacto), HttpStatus.CREATED);
     }
 
+    @GetMapping("/contacto/{id}")
+    public ResponseEntity<ContactoResponse> obtenerPorId(@PathVariable long id){
+        return ResponseEntity.ok().body(servicio.buscarPorId(id));
+    }
+
     @GetMapping("/contactos")
     public ResponseEntity<List<ContactoResponse>> listaContactosUsuario() {
         return ResponseEntity.ok().body(servicio.listaContactos());

@@ -15,4 +15,5 @@ public interface IContactoServ {
     ContactoResponse actualizarContacto(ContactoUpdate contactoUpdate);  
     ContactoResponse cambiarEstadoFavorito(boolean estado, long id);  
     List<ContactoResponse> listaGlobal();
+    ContactoResponse buscarPorId(long id);
 }

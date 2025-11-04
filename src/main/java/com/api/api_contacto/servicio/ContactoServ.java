@@ -134,5 +134,8 @@ public class ContactoServ implements IContactoServ {
         return mapper.toDto(contactoRepo.save(actualizar));
     }
 
-	
+    @Override
+    public ContactoResponse buscarPorId(long id) {
+        return mapper.toDto(contactoRepo.findById(id).orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado")));
+    }
 }

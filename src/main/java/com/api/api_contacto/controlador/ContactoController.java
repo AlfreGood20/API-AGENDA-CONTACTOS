@@ -60,9 +60,9 @@ public class ContactoController {
         return ResponseEntity.ok().body(servicio.listaGlobal());
     }
 
-    @PutMapping("/contacto")
-    public ResponseEntity<ContactoResponse> actualizarContactoUsuario(@Valid @RequestBody ContactoUpdate contactoUpdate) {
-        return ResponseEntity.ok().body(servicio.actualizarContacto(contactoUpdate));
+    @PutMapping("/contacto/{id}")
+    public ResponseEntity<ContactoResponse> actualizarContactoUsuario(@PathVariable long id,@Valid @RequestBody ContactoUpdate contactoUpdate) {
+        return ResponseEntity.ok().body(servicio.actualizarContacto(id,contactoUpdate));
     }
 
     @DeleteMapping("/contacto/{id}")

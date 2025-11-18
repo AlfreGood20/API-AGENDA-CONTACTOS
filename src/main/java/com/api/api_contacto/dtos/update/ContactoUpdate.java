@@ -14,8 +14,6 @@ import lombok.Setter;
 @Setter
 public class ContactoUpdate {
 
-    private long id;
-
     private String nombre;
 
     private String apellidos;

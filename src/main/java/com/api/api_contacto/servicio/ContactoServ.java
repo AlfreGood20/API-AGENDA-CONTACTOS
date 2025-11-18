@@ -58,7 +58,7 @@ public class ContactoServ implements IContactoServ {
         
         Usuario usuario = usuarioRepo.findById(usuarioSesion.getId())
             .orElseThrow(() -> new ExepcionRecursoNoEncontrado("Usuario no encontrado"));
-
+            
         Contacto nuevo = mapper.toEntity(request, usuario);
         return mapper.toDto(contactoRepo.save(nuevo));
     }
@@ -105,10 +105,10 @@ public class ContactoServ implements IContactoServ {
     
     @Override
     @Transactional
-    public ContactoResponse actualizarContacto(ContactoUpdate contactoUpdate){
+    public ContactoResponse actualizarContacto(long id,ContactoUpdate contactoUpdate){
         obtenerUsuarioDeSesion();
 
-        Contacto actualizar = contactoRepo.findById(contactoUpdate.getId())
+        Contacto actualizar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 
         actualizar.setNombre(contactoUpdate.getNombre());

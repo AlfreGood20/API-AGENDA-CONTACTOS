@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class Login {
 
-    @Email
+    @Email(message = "Correo invalido incompleto")
     private String correo;
 
     @Size(min = 8, message = "La contraseña tiene que ser mayor a 8 caracteres")

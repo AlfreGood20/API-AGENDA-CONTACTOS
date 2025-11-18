@@ -12,7 +12,7 @@ public interface IContactoServ {
     List<ContactoResponse> buscarPorNombre(String nombre);
     List<ContactoResponse> listaContactosFavoritos();
     void eliminarPorId(long id);
-    ContactoResponse actualizarContacto(ContactoUpdate contactoUpdate);  
+    ContactoResponse actualizarContacto(long id,ContactoUpdate contactoUpdate);  
     ContactoResponse cambiarEstadoFavorito(boolean estado, long id);  
     List<ContactoResponse> listaGlobal();
     ContactoResponse buscarPorId(long id);

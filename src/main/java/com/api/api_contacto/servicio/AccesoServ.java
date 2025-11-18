@@ -7,6 +7,8 @@ import com.api.api_contacto.mappers.UsuarioMapper;
 import com.api.api_contacto.modelo.Usuario;
 import com.api.api_contacto.repositorio.UsuarioRepo;
 import com.api.api_contacto.utils.Login;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -22,17 +24,22 @@ public class AccesoServ {
 
     
 
-    public UsuarioResponse autenticar(Login request, HttpSession session){
+    public UsuarioResponse autenticar(Login request,  HttpServletRequest httpRequest){
         Usuario usuario = usuarioRepo.findByCorreo(request.getCorreo())
         .orElseThrow(() -> new ExepcionAutenticacionRechazada("No existe usuario con correo "+request.getCorreo()));
 
         if(!usuario.getContrasena().equals(request.getContrasena())) throw new ExepcionAutenticacionRechazada("Contraseña incorrecta");
 
         UsuarioResponse usuarioDto = usuarioMapper.toDto(usuario);
-        session.setAttribute("usuario", usuarioDto);
+        
+        HttpSession oldSession = httpRequest.getSession(false);
+        if (oldSession != null) {
+            oldSession.invalidate();
+        }
+        HttpSession newSession = httpRequest.getSession(true);
+        newSession.setAttribute("usuario", usuarioDto);
         return usuarioDto;
     }
-
 
 
     public void desAutenticarse(HttpSession session){

@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.api_contacto.dtos.response.UsuarioResponse;
 import com.api.api_contacto.servicio.AccesoServ;
 import com.api.api_contacto.utils.Login;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,8 @@ public class AccesoController {
 
 
     @PostMapping("/auth")
-    public ResponseEntity<UsuarioResponse> darAcceso(@Valid @RequestBody Login crendenciales, HttpSession session) {
-        return ResponseEntity.ok().body(accesoServ.autenticar(crendenciales, session));
+    public ResponseEntity<UsuarioResponse> darAcceso(@Valid @RequestBody Login crendenciales, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok().body(accesoServ.autenticar(crendenciales, httpRequest));
     }
 
 

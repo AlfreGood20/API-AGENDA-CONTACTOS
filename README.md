@@ -71,3 +71,8 @@ SPRING_DATASOURCE_PASSWORD=secret
 ![alt text](image-4.png)
 
 ![alt text](image-5.png)
+
+
+Autor: AlfreGood20
+
+Última actualización: 2025-11-24

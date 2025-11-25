@@ -3,7 +3,6 @@ package com.api.api_contacto.dtos.request;
 import com.api.api_contacto.utils.CategoriaContacto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +19,8 @@ public class ContactoRequest {
 
     private String apellidos;
 
-    
     private String telefono;
 
-    @Email(message = "Correo invalido")
     private String correo;
 
     private String direccion;

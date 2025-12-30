@@ -9,12 +9,12 @@ import com.api.api_contacto.dtos.update.ContactoUpdate;
 import com.api.api_contacto.exepciones.MensajeExepcion;
 import com.api.api_contacto.servicio.ContactoServ;
 import com.api.api_contacto.utils.StatusCode;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -30,8 +30,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-@Tag(name = "Contacto", description = "Aqui estaran los enpoint acciones del usuario")
+@Tag(name = "Contacto", description = "Aqui estaran los endpoint acciones del usuario")
 @RestController
+@SecurityRequirement(name = "Bearer Authentication")
 @RequestMapping("/api")
 public class ContactoController {
 
@@ -41,9 +42,7 @@ public class ContactoController {
         this.servicio = servicio;
     }
 
-
     @Operation(summary = "Crear un nuevo contacto", description = "Creas un nuevo contacto")
-
     @ApiResponses({
         @ApiResponse(responseCode = StatusCode.CREATED, description = "Se creo correctamente el contacto", content = @Content(mediaType = "application/json",schema = @Schema(implementation = UsuarioResponse.class))),
         @ApiResponse(responseCode = StatusCode.BAD_REQUEST,description = "Datos invalidos y/o cuerpo mas formado",content = @Content(schema = @Schema(hidden = true))),
@@ -51,7 +50,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json",schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.METHOD_NOT_ALLOWED, description="Metodo no soportado", content = @Content(mediaType = "application/json",schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @PostMapping("/contacto")
+    @PostMapping("/user/contacto")
     public ResponseEntity<ContactoResponse> nuevo(@Valid @RequestBody ContactoRequest contacto) {
         return new ResponseEntity<ContactoResponse>(servicio.crear(contacto), HttpStatus.CREATED);
     }
@@ -66,7 +65,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.METHOD_NOT_ALLOWED, description = "Metodo no soportado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @GetMapping("/contacto/{id}")
+    @GetMapping("/user/contacto/{id}")
     public ResponseEntity<ContactoResponse> obtenerPorId(@PathVariable long id){
         return ResponseEntity.ok().body(servicio.buscarPorId(id));
     }
@@ -79,7 +78,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @GetMapping("/contactos")
+    @GetMapping("/user/contactos")
     public ResponseEntity<List<ContactoResponse>> listaContactosUsuario() {
         return ResponseEntity.ok().body(servicio.listaContactos());
     }
@@ -93,7 +92,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @GetMapping("/contacto")
+    @GetMapping("/user/contacto")
     public ResponseEntity<List<ContactoResponse>> obtenerPorNombreUsuario(@RequestParam String nombre) {
         return ResponseEntity.ok().body(servicio.buscarPorNombre(nombre));
     }
@@ -106,7 +105,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @GetMapping("/contactos/favoritos")
+    @GetMapping("/user/contactos/favoritos")
     public ResponseEntity<List<ContactoResponse>> listaContactosFavoritosUsuario() {
         return ResponseEntity.ok().body(servicio.listaContactosFavoritos());
     }
@@ -135,7 +134,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @PutMapping("/contacto/{id}")
+    @PutMapping("/user/contacto/{id}")
     public ResponseEntity<ContactoResponse> actualizarContactoUsuario(@PathVariable long id,@Valid @RequestBody ContactoUpdate contactoUpdate) {
         return ResponseEntity.ok().body(servicio.actualizarContacto(id,contactoUpdate));
     }
@@ -149,7 +148,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @DeleteMapping("/contacto/{id}")
+    @DeleteMapping("/user/contacto/{id}")
     public ResponseEntity<Void> eliminarContactoPorId(@PathVariable long id){
         servicio.eliminarPorId(id);
         return ResponseEntity.noContent().build();
@@ -165,7 +164,7 @@ public class ContactoController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
-    @PatchMapping("/contacto/{id}")
+    @PatchMapping("/user/contacto/{id}")
     public ResponseEntity<ContactoResponse> cambiarEstadoFavoritoContactoUsuario(@PathVariable long id, @RequestParam boolean estado) {
         return ResponseEntity.ok().body(servicio.cambiarEstadoFavorito(estado, id));
     }

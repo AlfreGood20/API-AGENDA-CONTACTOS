@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.api.api_contacto.exepciones.MensajeExepcion;
@@ -35,8 +36,6 @@ public class UsuarioController {
         this.servicio = servicio;
     }
 
-
-    
     @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario en el sistema")
     @ApiResponses({
         @ApiResponse(responseCode = StatusCode.CREATED, description = "Usuario creado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponse.class))),
@@ -51,8 +50,6 @@ public class UsuarioController {
     }
 
 
-
-
     @Operation(summary = "Listar usuarios (admin)", description = "Devuelve el listado de usuarios (requiere permisos de administrador)")
     @ApiResponses({
         @ApiResponse(responseCode = StatusCode.OK, description = "Listado de usuarios", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponse.class))),
@@ -60,6 +57,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/admin/usuarios")
     public ResponseEntity<List<UsuarioResponse>> obtenerListado() {
         return ResponseEntity.ok().body(servicio.listado());
@@ -75,6 +73,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = StatusCode.UNAUTHORIZED, description = "No autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class))),
         @ApiResponse(responseCode = StatusCode.INTERNAL_SERVER_ERROR, description = "Error del servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MensajeExepcion.class)))
     })
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/admin/usuario/{id}")
     public ResponseEntity<Void> eliminarPorId(@PathVariable long id){
         servicio.eliminar(id);

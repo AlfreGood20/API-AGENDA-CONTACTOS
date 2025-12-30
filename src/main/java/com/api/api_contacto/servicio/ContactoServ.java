@@ -2,61 +2,47 @@ package com.api.api_contacto.servicio;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import com.api.api_contacto.configuracion.security.UsuarioDetails;
 import com.api.api_contacto.dtos.request.ContactoRequest;
 import com.api.api_contacto.dtos.response.ContactoResponse;
-import com.api.api_contacto.dtos.response.UsuarioResponse;
 import com.api.api_contacto.dtos.update.ContactoUpdate;
 import com.api.api_contacto.exepciones.ExepcionRecursoNoEncontrado;
-import com.api.api_contacto.exepciones.ExepcionAutenticacionRechazada;
 import com.api.api_contacto.mappers.ContactoMapper;
 import com.api.api_contacto.modelo.Contacto;
 import com.api.api_contacto.modelo.Usuario;
 import com.api.api_contacto.repositorio.ContactoRepo;
 import com.api.api_contacto.repositorio.UsuarioRepo;
 import com.api.api_contacto.utils.IContactoServ;
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 @Service
+@SuppressWarnings("null")
 public class ContactoServ implements IContactoServ {
 
-    private final ContactoRepo contactoRepo;
-    private final ContactoMapper mapper;
-    private final UsuarioRepo usuarioRepo;
+    @Autowired
+    private ContactoRepo contactoRepo;
 
-    public ContactoServ(ContactoRepo contactoRepo, ContactoMapper mapper, UsuarioRepo usuarioRepo) {
-        this.contactoRepo = contactoRepo;
-        this.mapper = mapper;
-        this.usuarioRepo = usuarioRepo;
+    @Autowired
+    private ContactoMapper mapper;
+
+    @Autowired
+    private UsuarioRepo usuarioRepo;
+
+
+    private UsuarioDetails getUsuario(){
+        return (UsuarioDetails) SecurityContextHolder.getContext()
+                    .getAuthentication()
+                    .getPrincipal();
     }
 
-    //OBTENER SESSION ACTIVA
-    private HttpSession obtenerSesion() {
-        ServletRequestAttributes atributos = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (atributos == null) {
-            throw new ExepcionAutenticacionRechazada("No hay sesión activa");
-        }
-        return atributos.getRequest().getSession();
-    }
-
-    //OBTENER USUARIO ACTIVO
-    private UsuarioResponse obtenerUsuarioDeSesion() {
-        HttpSession session = obtenerSesion();
-        Object atributo = session.getAttribute("usuario");
-        if (atributo == null) {
-            throw new ExepcionAutenticacionRechazada("No estás autenticado");
-        }
-        return (UsuarioResponse) atributo;
-    }
 
     @Override
     public ContactoResponse crear(ContactoRequest request) {
-        UsuarioResponse usuarioSesion = obtenerUsuarioDeSesion();
-        
-        Usuario usuario = usuarioRepo.findById(usuarioSesion.getId())
+
+        Usuario usuario = usuarioRepo.findById(getUsuario().getId())
             .orElseThrow(() -> new ExepcionRecursoNoEncontrado("Usuario no encontrado"));
             
         Contacto nuevo = mapper.toEntity(request, usuario);
@@ -65,15 +51,13 @@ public class ContactoServ implements IContactoServ {
 
     @Override
     public List<ContactoResponse> listaContactos() {
-        UsuarioResponse usuarioSesion = obtenerUsuarioDeSesion();
-        return mapper.listToDto(contactoRepo.findByUsuarioId(usuarioSesion.getId()));
+        return mapper.listToDto(contactoRepo.findByUsuarioId(getUsuario().getId()));
     }
 
     @Override
     public List<ContactoResponse> buscarPorNombre(String nombre) {
-        UsuarioResponse usuarioSesion = obtenerUsuarioDeSesion();
         
-        List<Contacto> contactos = contactoRepo.findByNombreAndUsuarioId(nombre, usuarioSesion.getId());
+        List<Contacto> contactos = contactoRepo.findByNombreAndUsuarioId(nombre, getUsuario().getId());
         if (contactos.isEmpty()) {
             throw new ExepcionRecursoNoEncontrado("Contacto con nombre '" + nombre + "' no encontrado");
         }
@@ -83,8 +67,7 @@ public class ContactoServ implements IContactoServ {
 
     @Override
     public List<ContactoResponse> listaContactosFavoritos() {
-        UsuarioResponse usuarioSesion = obtenerUsuarioDeSesion();
-        return mapper.listToDto(contactoRepo.findByUsuarioIdAndFavoritoTrue(usuarioSesion.getId()));
+        return mapper.listToDto(contactoRepo.findByUsuarioIdAndFavoritoTrue(getUsuario().getId()));
     }
 
     @Override
@@ -92,10 +75,8 @@ public class ContactoServ implements IContactoServ {
         return mapper.listToDto(contactoRepo.findAll());
     }
 
-	@Override
+    @Override
 	public void eliminarPorId(long id) {
-        obtenerUsuarioDeSesion();
-
         Contacto eliminar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 
@@ -106,8 +87,6 @@ public class ContactoServ implements IContactoServ {
     @Override
     @Transactional
     public ContactoResponse actualizarContacto(long id,ContactoUpdate contactoUpdate){
-        obtenerUsuarioDeSesion();
-
         Contacto actualizar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 
@@ -124,8 +103,6 @@ public class ContactoServ implements IContactoServ {
     @Override
     @Transactional
     public ContactoResponse cambiarEstadoFavorito(boolean estado, long id) {
-        obtenerUsuarioDeSesion();
-
         Contacto actualizar = contactoRepo.findById(id)
             .orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado"));
 
@@ -136,7 +113,6 @@ public class ContactoServ implements IContactoServ {
 
     @Override
     public ContactoResponse buscarPorId(long id) {
-        obtenerUsuarioDeSesion();
         return mapper.toDto(contactoRepo.findById(id).orElseThrow(()-> new ExepcionRecursoNoEncontrado("Contacto no encontrado")));
     }
 }

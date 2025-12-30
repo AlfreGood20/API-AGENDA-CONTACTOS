@@ -1,5 +1,6 @@
 package com.api.api_contacto.configuracion.security;
 
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import com.api.api_contacto.exepciones.ExepcionAutenticacion;
 import com.api.api_contacto.exepciones.ExepcionAutorizacion;
 
@@ -27,6 +29,18 @@ public class SpringSecurityConfig {
     public SecurityFilterChain filtroSeguridad(HttpSecurity http) throws Exception{
         return http 
                 .csrf((csrf) -> csrf.disable())
+
+                .cors(cors -> cors
+                    .configurationSource((request) -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowCredentials(true);
+                        config.setAllowedOrigins(Arrays.asList("*"));
+                        config.setAllowedMethods(Arrays.asList("GET","POST","PATH","PUT","DELETE","OPTIONS"));
+                        config.setAllowedHeaders(Arrays.asList("*"));
+
+                        return config;
+                    })
+                )
 
                 .authorizeHttpRequests((authorizeHttpRequest) -> authorizeHttpRequest
                     .requestMatchers("/api/admin/**").hasRole("ADMIN")

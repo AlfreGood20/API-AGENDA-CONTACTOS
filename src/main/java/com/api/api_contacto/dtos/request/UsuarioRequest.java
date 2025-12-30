@@ -1,7 +1,13 @@
 package com.api.api_contacto.dtos.request;
 
+
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +28,7 @@ public class UsuarioRequest {
 
     @Size(min = 8, message = "El numero no puede ser mayor a 10 digitos")
     private String telefono;
-
+    
     @NotBlank(message = "El correo es obligatorio")
     @Email(message = "Correo invalido")
     private String correo;
@@ -30,4 +36,8 @@ public class UsuarioRequest {
     @NotBlank(message = "La contraseña es obligatorio")
     @Size(min = 8, max = 100, message = "La contraseña tiene que ser mayor a 8 caracteres")
     private String contrasena;
+
+    @JsonProperty("rol_ids")
+    @NotNull(message = "id del rol es obligatorio. Escoger ADMIN O USER")
+    private Set<Long> rolIds;
 }

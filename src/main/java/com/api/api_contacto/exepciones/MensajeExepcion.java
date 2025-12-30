@@ -1,7 +1,6 @@
 package com.api.api_contacto.exepciones;
 
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +16,6 @@ public class MensajeExepcion {
     private LocalDateTime timestamp;
     private int status;
     private String error;
-    private String mensaje;
+    private Object mensaje;
     private String ruta;
 }

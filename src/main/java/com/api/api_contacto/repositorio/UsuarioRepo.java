@@ -8,5 +8,6 @@ import com.api.api_contacto.modelo.Usuario;
 
 @Repository
 public interface UsuarioRepo extends JpaRepository<Usuario, Long>{
-    Optional<Usuario> findByCorreo(String contrasena);
+    Optional<Usuario> findByCorreo(String correo);
+    boolean existsByCorreo(String correo);
 }

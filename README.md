@@ -1,10 +1,10 @@
 
 # API-CONTACTO
 
-Esta apirest full fue hecha para poder usarse en frontend <a href="https://github.com/AlfreGood20/PWA-AGENDA-DE-CONTACTO">REPOSITORIO</a>. Hechas con buena practicas de programacion web backend. Consiste en un CRUD de contactos con usuarios con relacion a contactos, asi como la utilizacion de httpSession para el manejo de sesion.
+Esta apirest full fue hecha para poder usarse en frontend <a href="https://github.com/AlfreGood20/PWA-AGENDA-DE-CONTACTO">REPOSITORIO</a>. Hechas con buena practicas de programacion web backend. Consiste en un CRUD de contactos con usuarios con relacion a contactos, asi como autenticacion basada en token (Json web token).
 
 ## Caracteristicas
-- Autenticacion (httpSession)
+- Autenticacion (JWT)
 - CRUD de contactos
 - Busqueda de elementos y filtraccion
 - Manejo de errores consistentes (MensajeExepcion)
@@ -44,6 +44,8 @@ Variables necesarias (application.properties/example .env):
 - DB_URL
 - DB_USERNAME
 - DB_PASSWORD
+- JWT_EXPIRED
+- JWT_SECRET
 
 Ejemplo:
 ```properties
@@ -51,6 +53,9 @@ Ejemplo:
 SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/api_contacto
 SPRING_DATASOURCE_USERNAME=root
 SPRING_DATASOURCE_PASSWORD=secret
+
+jwt.expired=36000
+jwt.secret=llave crecreta de 32 caracteres
 ```
 
 ## Documentación de la API
@@ -58,21 +63,9 @@ SPRING_DATASOURCE_PASSWORD=secret
 - Archivo OpenAPI generado: /v3/api-docs
 
 ## Documentación visual
-
-![alt text](image.png)
-
-![alt text](image-1.png)
-
-![alt text](image-2.png)
-
-## Esquemas
-![alt text](image-3.png)
-
-![alt text](image-4.png)
-
-![alt text](image-5.png)
-
+<img src='./imgs/image0.png'>
+<img src='./imgs/image1.png'>
 
 Autor: AlfreGood20
 
-Última actualización: 2025-11-24
+Última actualización: 30-12-2025

@@ -112,7 +112,8 @@ public class GlobalExepciones {
             .stream()
             .collect(Collectors.toMap(
                 fieldError -> fieldError.getField(),
-                fieldError -> fieldError.getDefaultMessage()
+                fieldError -> fieldError.getDefaultMessage(),
+                (existing, replacement) -> existing
             ));
 
         MensajeExepcion respuesta = MensajeExepcion.builder()

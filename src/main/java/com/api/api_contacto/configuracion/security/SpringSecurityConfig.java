@@ -34,8 +34,8 @@ public class SpringSecurityConfig {
                     .configurationSource((request) -> {
                         CorsConfiguration config = new CorsConfiguration();
                         config.setAllowCredentials(true);
-                        config.setAllowedOrigins(Arrays.asList("*"));
-                        config.setAllowedMethods(Arrays.asList("GET","POST","PATH","PUT","DELETE","OPTIONS"));
+                        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "http://192.168.0.10:*"));
+                        config.setAllowedMethods(Arrays.asList("*"));
                         config.setAllowedHeaders(Arrays.asList("*"));
 
                         return config;
